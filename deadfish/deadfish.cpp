@@ -25,25 +25,48 @@ int main(int argc, char const *argv[])
         // Loop through each character in line
         for (int i = 0; i < line.length(); i++)
         {
-            // Increment
-            if (line[i] == 'i')
+            switch(line[i])
             {
-                accumulator++;
-            }
-            // Decrement
-            else if (line[i] == 'd')
-            {
-                accumulator--;
-            }
-            // Square
-            else if (line[i] == 's')
-            {
-                accumulator *= accumulator;
-            }
-            // Print
-            else if (line[i] == 'o')
-            {
-                std::cout << accumulator << std::endl;
+                // Increment accumulator
+                case '+':
+                    accumulator++;
+                    break;
+                // Decrement accumulator
+                case '-':
+                    accumulator--;
+                    break;
+                // Move accumulator right
+                case '>':
+                    accumulator++;
+                    break;
+                // Move accumulator left
+                case '<':
+                    accumulator--;
+                    break;
+                // Output accumulator
+                case '.':
+                    std::cout << (char)accumulator;
+                    break;
+                // Input from stdin
+                case ',':
+                    std::cin >> accumulator;
+                    break;
+                // Loop start
+                case '[':
+                    if (accumulator == 0)
+                    {
+                        int loopCount = 0;
+                        while (line[i] != ']')
+                        {
+                            i++;
+                            loopCount++;
+                        }
+                        i -= loopCount;
+                    }
+                    break;
+                // Loop end
+                case ']':
+                    break;
             }
 
             // If accumulator is less than 0 or greater than 256, set to 0
