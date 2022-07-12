@@ -22,80 +22,79 @@ int main(int argc, char const *argv[])
         return 0;
     }
 
-    // Read file line by line
-    std::string line;
-    while (std::getline(file, line))
+    // Read file character by character
+    char c;
+    while (file.get(c))
     {
-        // Loop through each character in line
-        for (int i = 0; i < line.size(); i++)
+        // std::cout << "Character: " << c << std::endl;
+        // // Print tape
+        // std::cout << "Tape: " << tape[pointer] << std::endl;
+        switch (c)
         {
-            switch (line[i])
+        // Move pointer right
+        case '>':
+            pointer++;
+            break;
+        // Move pointer left
+        case '<':
+            pointer--;
+            break;
+        // Increment
+        case '+':
+            tape[pointer]++;
+            break;
+        // Decrement
+        case '-':
+            tape[pointer]--;
+            break;
+        // Output in ascii
+        case '.':
+            std::cout << (char)tape[pointer];
+            break;
+        // Input from stdin
+        case ',':
+            std::cin >> tape[pointer];
+            break;
+        // Loop start
+        case '[':
+            if (tape[pointer] == 0)
             {
-            // Move pointer right
-            case '>':
-                pointer++;
-                break;
-            // Move pointer left
-            case '<':
-                pointer--;
-                break;
-            // Increment
-            case '+':
-                tape[pointer]++;
-                break;
-            // Decrement
-            case '-':
-                tape[pointer]--;
-                break;
-            // Output in ascii
-            case '.':
-                std::cout << (char)tape[pointer];
-                break;
-            // Input from stdin
-            case ',':
-                std::cin >> tape[pointer];
-                break;
-            // Loop start
-            case '[':
-                if (tape[pointer] == 0)
+                // Count number of loops
+                int loopCount = 1;
+                while (loopCount > 0)
                 {
-                    // Count number of loops
-                    int count = 1;
-                    while (count > 0)
-                    {
-                        // Read next character
-                        i++;
-                        // If loop start, increment count
-                        if (line[i] == '[')
-                            count++;
-                        // If loop end, decrement count
-                        else if (line[i] == ']')
-                            count--;
-                    }
+                    // Read next character
+                    file.get(c);
+                    // If loop start, increment loop count
+                    if (c == '[')
+                        loopCount++;
+                    // If loop end, decrement loop count
+                    else if (c == ']')
+                        loopCount--;
                 }
-                break;
-            // Loop end
-            case ']':
-                if (tape[pointer] != 0)
-                {
-                    // Count number of loops
-                    int count = 1;
-                    while (count > 0)
-                    {
-                        // Read previous character
-                        i--;
-                        // If loop start, decrement count
-                        if (line[i] == '[')
-                            count--;
-                        // If loop end, increment count
-                        else if (line[i] == ']')
-                            count++;
-                    }
-                }
-                break;
             }
-
-            // If 
+            break;
+        // Loop end
+        case ']':
+            if (tape[pointer] != 0)
+            {
+                // Count number of loops
+                int loopCount = 1;
+                while (loopCount > 0)
+                {
+                    // Read previous character
+                    file.unget();
+                    file.unget();
+                    file.get(c);
+                    // If loop start, decrement loop count
+                    if (c == '[')
+                        loopCount--;
+                    // If loop end, increment loop count
+                    else if (c == ']')
+                        loopCount++;
+                }
+            }
+            break;
         }
     }
 
