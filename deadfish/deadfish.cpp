@@ -28,44 +28,20 @@ int main(int argc, char const *argv[])
             switch(line[i])
             {
                 // Increment accumulator
-                case '+':
+                case 'i':
                     accumulator++;
                     break;
                 // Decrement accumulator
-                case '-':
+                case 'd':
                     accumulator--;
                     break;
-                // Move accumulator right
-                case '>':
-                    accumulator++;
+                // Square accumulator
+                case 's':
+                    accumulator *= accumulator;
                     break;
-                // Move accumulator left
-                case '<':
-                    accumulator--;
-                    break;
-                // Output accumulator
-                case '.':
+                // Output accumulator as char
+                case 'o':
                     std::cout << (char)accumulator;
-                    break;
-                // Input from stdin
-                case ',':
-                    std::cin >> accumulator;
-                    break;
-                // Loop start
-                case '[':
-                    if (accumulator == 0)
-                    {
-                        int loopCount = 0;
-                        while (line[i] != ']')
-                        {
-                            i++;
-                            loopCount++;
-                        }
-                        i -= loopCount;
-                    }
-                    break;
-                // Loop end
-                case ']':
                     break;
             }
 
